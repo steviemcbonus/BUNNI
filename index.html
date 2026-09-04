@@ -221,8 +221,8 @@
       chart.data.datasets[0].data = orderedLogs.map(e => e.fatigue);
       chart.data.datasets[1].data = orderedLogs.map(e => e.brainFog);
       chart.data.datasets[2].data = orderedLogs.map(e => e.jointPain);
-      chart.data.datasets[4].data = orderedLogs.map(e => e.anxiety);
-      chart.data.datasets[5].data = orderedLogs.map(e => e.bloating);
+      chart.data.datasets[3].data = orderedLogs.map(e => e.anxiety);
+      chart.data.datasets[4].data = orderedLogs.map(e => e.bloating);
       chart.update();
 
       logHistory.innerHTML = logs.map(e => `
