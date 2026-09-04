@@ -323,26 +323,37 @@ logHistory.onclick = (e) => {
       document.body.removeChild(link);
     };
 
-    // 7. Fullscreen Logic
+   // 7. Fullscreen Logic (Cross-platform for Mobile & Desktop)
     fullscreenBtn.onclick = () => {
-      if (!document.fullscreenElement) {
-        if (chartContainer.requestFullscreen) chartContainer.requestFullscreen();
-        else if (chartContainer.webkitRequestFullscreen) chartContainer.webkitRequestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-      }
-    };
+      const isCSSFullscreen = chartContainer.classList.contains('fixed');
 
-    document.addEventListener('fullscreenchange', () => {
-      if (document.fullscreenElement) {
-        chartContainer.classList.remove('h-96');
-        chartContainer.classList.add('h-full', 'w-full', 'flex', 'items-center', 'justify-center', 'p-6');
+      if (!isCSSFullscreen) {
+        // 1. Try Native Browser Fullscreen first (Android/Desktop)
+        if (chartContainer.requestFullscreen) {
+          chartContainer.requestFullscreen().catch(() => {});
+        } else if (chartContainer.webkitRequestFullscreen) {
+          chartContainer.webkitRequestFullscreen();
+        }
+        
+        // 2. Fallback CSS Fullscreen (Fixes iOS Safari)
+        chartContainer.classList.add('fixed', 'inset-0', 'z-50', 'bg-white', 'p-4', 'h-screen', 'w-screen');
+        chartContainer.classList.remove('relative', 'h-96');
       } else {
-        chartContainer.classList.remove('h-full', 'w-full', 'flex', 'items-center', 'justify-center', 'p-6');
-        chartContainer.classList.add('h-96');
+        // Exit Native Fullscreen
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+        
+        // Exit CSS Fullscreen
+        chartContainer.classList.remove('fixed', 'inset-0', 'z-50', 'bg-white', 'p-4', 'h-screen', 'w-screen');
+        chartContainer.classList.add('relative', 'h-96');
       }
-      chart.resize();
-    });
+
+      // Force Chart.js to recalculate dimensions on mobile
+      setTimeout(() => chart.resize(), 100);
+    };
 
     // Run initial load
     updateUI();
