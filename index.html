@@ -45,14 +45,7 @@
         <input type="range" id="jointPain" min="1" max="10" value="1" class="w-full accent-indigo-600">
       </div>
 
-      <!-- 4. Cold Intolerance -->
-      <div>
-        <div class="flex justify-between text-sm font-medium mb-1">
-          <label for="coldSensitivity">Cold Sensitivity</label>
-          <span id="coldVal" class="font-bold text-indigo-600">1</span>
-        </div>
-        <input type="range" id="coldSensitivity" min="1" max="10" value="1" class="w-full accent-indigo-600">
-      </div>
+     
 
       <!-- 5. Mood / Anxiety -->
       <div>
@@ -143,7 +136,6 @@
       { input: 'fatigue', val: 'fatigueVal' },
       { input: 'brainFog', val: 'fogVal' },
       { input: 'jointPain', val: 'jointVal' },
-      { input: 'coldSensitivity', val: 'coldVal' },
       { input: 'anxiety', val: 'anxietyVal' },
       { input: 'bloating', val: 'bloatingVal' }
     ];
@@ -177,7 +169,6 @@
           { label: 'Fatigue', data: [], borderColor: '#6366f1', backgroundColor: '#6366f1', tension: 0.3 },
           { label: 'Brain Fog', data: [], borderColor: '#ec4899', backgroundColor: '#ec4899', tension: 0.3 },
           { label: 'Sleep', data: [], borderColor: '#eab308', backgroundColor: '#eab308', tension: 0.3 },
-          { label: 'Cold', data: [], borderColor: '#06b6d4', backgroundColor: '#06b6d4', tension: 0.3 },
           { label: 'Mood', data: [], borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', tension: 0.3 },
           { label: 'Tummy', data: [], borderColor: '#10b981', backgroundColor: '#10b981', tension: 0.3 }
         ]
@@ -229,7 +220,6 @@
       chart.data.datasets[0].data = orderedLogs.map(e => e.fatigue);
       chart.data.datasets[1].data = orderedLogs.map(e => e.brainFog);
       chart.data.datasets[2].data = orderedLogs.map(e => e.jointPain);
-      chart.data.datasets[3].data = orderedLogs.map(e => e.coldSensitivity);
       chart.data.datasets[4].data = orderedLogs.map(e => e.anxiety);
       chart.data.datasets[5].data = orderedLogs.map(e => e.bloating);
       chart.update();
@@ -241,7 +231,7 @@
             <span>Fatigue: ${e.fatigue} | Fog: ${e.brainFog} | Sleep: ${e.jointPain}</span>
           </div>
           <div class="text-[10px] text-slate-500 mt-0.5">
-            Cold: ${e.coldSensitivity} | Mood: ${e.anxiety} | Tummy: ${e.bloating} | Levo: ${(e.levo ?? e.meds) ? 'Yes' : 'No'} | Supplements: ${e.supplements ? 'Yes' : 'No'}
+            Mood: ${e.anxiety} | Tummy: ${e.bloating} | Levo: ${(e.levo ?? e.meds) ? 'Yes' : 'No'} | Supplements: ${e.supplements ? 'Yes' : 'No'}
           </div>
           ${e.notes ? `<p class="text-slate-500 italic mt-1 text-xs font-normal">${e.notes}</p>` : ''}
         </div>
@@ -269,7 +259,6 @@
         fatigue: Number(document.getElementById('fatigue').value),
         brainFog: Number(document.getElementById('brainFog').value),
         jointPain: Number(document.getElementById('jointPain').value),
-        coldSensitivity: Number(document.getElementById('coldSensitivity').value),
         anxiety: Number(document.getElementById('anxiety').value),
         bloating: Number(document.getElementById('bloating').value),
         levo: levoInput.checked,
@@ -290,13 +279,12 @@
         return;
       }
 
-      const headers = ["Date", "Fatigue", "Brain Fog", "Sleep Quality", "Cold Sensitivity", "Mood", "Tummy", "Levothyroxine", "Supplements", "Notes"];
+      const headers = ["Date", "Fatigue", "Brain Fog", "Sleep Quality", "Mood", "Tummy", "Levothyroxine", "Supplements", "Notes"];
       const rows = logs.map(e => [
         `"${e.date}"`, 
         e.fatigue, 
         e.brainFog, 
         e.jointPain, 
-        e.coldSensitivity, 
         e.anxiety, 
         e.bloating, 
         (e.levo ?? e.meds) ? "Yes" : "No", 
